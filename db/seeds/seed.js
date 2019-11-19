@@ -35,19 +35,8 @@ exports.seed = function(knex) {
       //console.log(articleRows);
       const articleRef = makeRefObj(articleRows);
       const formattedComments = formatComments(commentData, articleRef);
-      //console.log(commentData);
+      // console.log(commentData);
       return knex("comments").insert(formattedComments);
     });
 };
-
-/*
-article_id: 1,
-title: 'Running a Node App',
-
-article_id: 2,
-title: 'The Rise Of Thinking Machines: How IBM\'s Watson Takes On The World',
-
-article_id: 3,
-title: '22 Amazing open source React projects',
-
-    */
+//console.log(userData);

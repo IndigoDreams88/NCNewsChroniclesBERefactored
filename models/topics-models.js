@@ -1,5 +1,12 @@
 const connection = require("../db/connection");
 
-exports.fetchTopics = () => {
-  return connection.select("*").from("topics");
-};
+function fetchTopics() {
+  return connection
+    .select("*")
+    .from("topics")
+    .then(topics => {
+      return { topics: topics };
+    });
+}
+
+module.exports = { fetchTopics };

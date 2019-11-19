@@ -5,11 +5,13 @@ exports.up = function(knex) {
     commentsTable
       .string("author")
       .notNullable()
-      .references("users.username");
+      .references("users.username")
+      .onDelete("CASCADE");
     commentsTable
       .integer("article_id")
       .notNullable()
-      .references("articles.article_id");
+      .references("articles.article_id")
+      .onDelete("CASCADE");
     commentsTable.integer("votes").defaultTo(0);
     commentsTable.timestamp("created_at").defaultTo(knex.fn.now());
     commentsTable.string("body", 2000).notNullable();
