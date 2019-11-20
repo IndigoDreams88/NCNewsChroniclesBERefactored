@@ -258,5 +258,22 @@ describe("/api tests", () => {
         .send({ username: "lurker", comment: "blah blah" })
         .expect(201);
     });
+    it("POST:201 /api/articles/:article_id/comments - responds with the posted article, containing the relevant keys", () => {
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send({ username: "lurker", comment: "blah blah" })
+        .expect(201)
+        .then(({ body }) => {
+          //console.log(body);
+          expect(body.postedComment[0]).to.have.keys([
+            "author",
+            "votes",
+            "article_id",
+            "comment_id",
+            "body",
+            "created_at"
+          ]);
+        });
+    });
   });
 });
