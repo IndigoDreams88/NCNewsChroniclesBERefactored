@@ -22,6 +22,10 @@ exports.handlePSQLErrors = (err, req, res, next) => {
       "23503": {
         status: 404,
         msg: "Error article_id does not exist"
+      },
+      "42703": {
+        status: 400,
+        msg: createMessage(err)
       }
     };
     const thisError = psqlErrors[err.code];

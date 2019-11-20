@@ -327,7 +327,7 @@ describe("/api tests", () => {
     });
     it("GET:200 /api/articles/:article_id/comments - responds with a status of 200", () => {
       return request(app)
-        .get("/api/articles/7/comments")
+        .get("/api/articles/1/comments")
         .expect(200);
     });
     it("GET:200 /api/articles/:article_id/comments - responds with an empty array if no comments exist for that article_id", () => {
@@ -335,7 +335,7 @@ describe("/api tests", () => {
         .get("/api/articles/7/comments")
         .expect(200)
         .then(({ body }) => {
-          expect(body.comments).to.be.an("array");
+          expect(body.comments.length).to.equal(0);
         });
     });
     it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, when comments exist for that article_id", () => {
@@ -362,31 +362,132 @@ describe("/api tests", () => {
           expect(body.comments).to.be.descendingBy("created_at");
         });
     });
-    xit("GET:400 /api/articles/:article_id/comments - it responds with an error message if passed an invalid type of id", () => {
+    it("GET:400 /api/articles/:article_id/comments - responds with an error message if passed an invalid type of id", () => {
       return request(app)
         .get("/api/articles/banana/comments")
         .expect(400)
         .then(response => {
           expect(response.body.msg).to.equal(
-            'invalid input syntax for integer: "banana"'
+            ' invalid input syntax for integer: "banana"'
           );
         });
     });
-    xit("GET:404 /api/articles/:article_id/comments - it responds with an error if passed a valid article id type, but that does not exist", () => {
+    it("GET:404 /api/articles/:article_id/comments - responds with an error if passed a valid article id type, but that does not exist", () => {
       return request(app)
-        .get("/api/articles/88888/comments")
+        .get("/api/articles/9999/comments")
         .expect(404)
         .then(response => {
           expect(response.body.msg).to.equal(
-            "Error status 404, article id 88888 not found"
+            "Error status 404, article id 9999 not found"
           );
         });
     });
-    xit("GET:405 /api/articles/:article_id/comments - it responds with an error mesage if a request to use an invalid method is submitted", () => {
+    it("GET:405 /api/articles/:article_id/comments - responds with an error mesage if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["patch", "put", "delete"];
       const methodPromises = invalidMethods.map(method => {
         return request(app)
           [method]("/api/articles/5/comments")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).to.equal("Error 405, method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
+    });
+    it("GET:200 /api/articles - responds with a status of 200", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200);
+    });
+    it("GET:200 /api/articles - responds with an array of article objects", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          //console.log(body);
+          //console.log(body.articles);
+          //console.log(body.articles[0]);
+          expect(body.articles).to.be.an("array");
+          expect(body.articles[0]).to.contain.keys([
+            "author",
+            "title",
+            "article_id",
+            "topic",
+            "created_at",
+            "votes",
+            "comment_count"
+          ]);
+        });
+    });
+    it("GET:200 /api/articles - responds with an array of article objects sorted by default by created_at in descending order", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          //console.log(articles[0].created_at)
+          expect(articles).to.be.descendingBy("created_at");
+        });
+    });
+    it("GET:200 /api/articles - responds with an array of article objects, sorted by the passed in query of title, and the passed in order of ascending", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&&order=asc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          //console.log(articles[0].created_at)
+          expect(articles).to.be.ascendingBy("title");
+        });
+    });
+    it("GET:200 /api/articles - responds with an array of articles sorted by the passed in author/username", () => {
+      return request(app)
+        .get("/api/articles?author=butter_bridge")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          //console.log(articles);
+          expect(articles).to.be.descendingBy("author");
+        });
+    });
+    it("GET:200 /api/articles - responds with an array of articles sorted by the passed in topic", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          // console.log(articles[0]);
+          expect(articles).to.be.descendingBy("topic");
+        });
+    });
+    it("GET:400 /api/articles - responds with an an error message if an invalid column is passed into the sort_by query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=banana")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).to.equal(' column "banana" does not exist');
+        });
+    });
+    it("GET:404 /api/articles - responds with an error status 404 and a messsage when provided a none existant author ", () => {
+      return request(app)
+        .get("/api/articles?author=wallace")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          // console.log(articles[0]);
+          expect(msg).to.equal("Error status 404, author wallace not found");
+        });
+    });
+    it("GET:404 /api/articles - responds with an error status 404 and a messsage when provided a none existant topic ", () => {
+      return request(app)
+        .get("/api/articles?topic=jinglejangle")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          // console.log(articles[0]);
+          expect(msg).to.equal(
+            "Error status 404, topic jinglejangle not found"
+          );
+        });
+    });
+    it("GET:405 /api/articles - responds with an error message if a request to use an invalid method is submitted", () => {
+      const invalidMethods = ["post", "patch", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles")
           .expect(405)
           .then(({ body: { msg } }) => {
             expect(msg).to.equal("Error 405, method not allowed");
