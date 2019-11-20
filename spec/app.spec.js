@@ -255,13 +255,13 @@ describe("/api tests", () => {
     it("POST:201 /api/articles/:article_id/comments - responds with a status of 201", () => {
       return request(app)
         .post("/api/articles/1/comments")
-        .send({ username: "lurker", comment: "blah blah" })
+        .send({ username: "lurker", body: "blah blah" })
         .expect(201);
     });
     it("POST:201 /api/articles/:article_id/comments - responds with the posted article, containing the relevant keys", () => {
       return request(app)
         .post("/api/articles/1/comments")
-        .send({ username: "lurker", comment: "blah blah" })
+        .send({ username: "lurker", body: "blah blah" })
         .expect(201)
         .then(({ body }) => {
           //console.log(body);
@@ -274,6 +274,125 @@ describe("/api tests", () => {
             "created_at"
           ]);
         });
+    });
+    it("POST:400 /api/articles/:article_id/comments - it responds with an error if missing a required request property, i.e a body", () => {
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send({ username: "lurker" })
+        .expect(400)
+        .then(response => {
+          expect(response.body.msg).to.equal("Error:400, Bad Request");
+        });
+    });
+    it("POST:400 /api/articles/:article_id/comments -  it responds with an error if missing a required request property, i.e a username", () => {
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send({ body: "Blah, blah, blah" })
+        .expect(400)
+        .then(response => {
+          expect(response.body.msg).to.equal("Error:400, Bad Request");
+        });
+    });
+    it("POST:400 /api/articles/:article_id/comments - it responds with an error if passed a valid username type, but that does not exist", () => {
+      return request(app)
+        .post("/api/articles/banana/comments")
+        .send({ username: "badgersbadgers", body: "Blah, blah, blah" })
+        .expect(400)
+        .then(response => {
+          expect(response.body.msg).to.equal(
+            ' invalid input syntax for integer: "banana"'
+          );
+        });
+    });
+    it("POST:404 /api/articles/:article_id/comments - it responds with an error if passed a valid article id, but that does not exist", () => {
+      return request(app)
+        .post("/api/articles/66666/comments")
+        .send({ username: "lurker", body: "Blah, blah, blah" })
+        .expect(404)
+        .then(response => {
+          expect(response.body.msg).to.equal("Error article_id does not exist");
+        });
+    });
+    it("POST:405 /api/articles/:article_id/comments - it responds with an error mesage if a request to use an invalid method is submitted", () => {
+      const invalidMethods = ["delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles/5/comments")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).to.equal("Error 405, method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
+    });
+    it("GET:200 /api/articles/:article_id/comments - responds with a status of 200", () => {
+      return request(app)
+        .get("/api/articles/7/comments")
+        .expect(200);
+    });
+    it("GET:200 /api/articles/:article_id/comments - responds with an empty array if no comments exist for that article_id", () => {
+      return request(app)
+        .get("/api/articles/7/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).to.be.an("array");
+        });
+    });
+    it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, when comments exist for that article_id", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments[0]).to.be.an("object");
+          expect(body.comments[0]).to.have.keys(
+            "comment_id",
+            "author",
+            "article_id",
+            "votes",
+            "created_at",
+            "body"
+          );
+        });
+    });
+    it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, sorted by default by created_at in descening order", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).to.be.descendingBy("created_at");
+        });
+    });
+    xit("GET:400 /api/articles/:article_id/comments - it responds with an error message if passed an invalid type of id", () => {
+      return request(app)
+        .get("/api/articles/banana/comments")
+        .expect(400)
+        .then(response => {
+          expect(response.body.msg).to.equal(
+            'invalid input syntax for integer: "banana"'
+          );
+        });
+    });
+    xit("GET:404 /api/articles/:article_id/comments - it responds with an error if passed a valid article id type, but that does not exist", () => {
+      return request(app)
+        .get("/api/articles/88888/comments")
+        .expect(404)
+        .then(response => {
+          expect(response.body.msg).to.equal(
+            "Error status 404, article id 88888 not found"
+          );
+        });
+    });
+    xit("GET:405 /api/articles/:article_id/comments - it responds with an error mesage if a request to use an invalid method is submitted", () => {
+      const invalidMethods = ["patch", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles/5/comments")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).to.equal("Error 405, method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
   });
 });

@@ -2,7 +2,8 @@ const articlesRouter = require("express").Router();
 const {
   getArticlesById,
   patchVotes,
-  postComment
+  postComment,
+  getCommentsByArticleId
 } = require("../controllers/articles-controllers");
 const { send405Error } = require("../error-handler/error-handler");
 
@@ -12,6 +13,10 @@ articlesRouter
   .patch(patchVotes)
   .all(send405Error);
 
-articlesRouter.route("/:article_id/comments").post(postComment);
+articlesRouter
+  .route("/:article_id/comments")
+  .post(postComment)
+  .get(getCommentsByArticleId)
+  .all(send405Error);
 
 module.exports = articlesRouter;

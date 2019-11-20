@@ -9,6 +9,7 @@ function fetchArticlesById(article_id) {
     .groupBy("articles.article_id")
     .where({ "articles.article_id": article_id })
     .then(articles => {
+      //console.log(articles);
       if (articles.length === 0) {
         return Promise.reject({
           status: 404,
@@ -43,24 +44,33 @@ function updateVotes(update, article_id) {
     });
 }
 
-function createComment(id, username, comment) {
-  //console.log(id);
+function createComment(id, username, body) {
   return connection("comments")
-    .insert({ article_id: id, author: username, body: comment })
+    .insert({ article_id: id, author: username, body: body })
     .returning("*")
     .then(comments => {
-      // console.log(comments);
+      //console.log(comments);
       return comments;
     });
 }
 
-/*
-{ body: 'I am 100% sure that we\'re not completely sure.',
-    belongs_to: 'UNCOVERED: catspiracy to bring down democracy',
-    created_by: 'butter_bridge',
-    votes: 1,
-    created_at: 1069850163389 }
+function fetchCommentsByArticleId(article_id, sortBy, order) {
+  //console.log(article_id);
+  return connection
+    .select("*")
+    .from("comments")
+    .where({ "comments.article_id": article_id })
+    .orderBy(sortBy || "created_at", order || "desc")
+    .returning("*")
+    .then(comments => {
+      //console.log(comments);
+      return comments;
+    });
+}
 
-*/
-
-module.exports = { fetchArticlesById, updateVotes, createComment };
+module.exports = {
+  fetchArticlesById,
+  updateVotes,
+  createComment,
+  fetchCommentsByArticleId
+};
