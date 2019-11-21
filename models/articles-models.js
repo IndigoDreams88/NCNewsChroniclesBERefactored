@@ -44,7 +44,7 @@ function createComment(id, username, body) {
     .insert({ article_id: id, author: username, body: body })
     .returning("*")
     .then(comments => {
-      return comments;
+      return { comments: comments };
     });
 }
 
@@ -59,7 +59,7 @@ function fetchCommentsByArticleId(article_id, sortBy, order) {
       if (comments.length === 0) {
         return Promise.all([comments, checkIfExists(article_id)]);
       } else {
-        return [comments];
+        return { comments: comments };
       }
     });
 }
