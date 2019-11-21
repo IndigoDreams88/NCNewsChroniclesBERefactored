@@ -496,4 +496,169 @@ describe("/api tests", () => {
       return Promise.all(methodPromises);
     });
   });
+  describe("/comments tests", () => {
+    it("PATCH:200 /api/comments/:comment_id responds with a status of 200", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send({ inc_votes: 4 })
+        .expect(200)
+        .then(({ body }) => {
+          //console.log(body);
+        });
+    });
+    it("PATCH:200 /api/comments/:comment_id responds with an array of comment objects for the given comment_id", () => {
+      return request(app)
+        .patch("/api/comments/2")
+        .send({ inc_votes: 4 })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).to.be.an("array");
+        });
+    });
+    it("PATCH:200 /api/comments/:comment_id responds with an array of comment objects each with the keys: body, votes, created_at, author, article_id and comment_id and corresponding values", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send({ inc_votes: 4 })
+        .expect(200)
+        .then(({ body }) => {
+          //console.log(body.comments[0]);
+          expect(body.comments[0]).to.have.keys([
+            "body",
+            "votes",
+            "created_at",
+            "author",
+            "article_id",
+            "comment_id"
+          ]);
+          expect(body.comments[0]).to.eql({
+            comment_id: 1,
+            author: "butter_bridge",
+            article_id: 9,
+            votes: 20,
+            created_at: "2017-11-22T12:36:03.389Z",
+            body:
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+          });
+        });
+    });
+    it("PATCH:200 /api/comments/:comment_id responds the unchanged comment if no votes are added", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send({})
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments[0]).to.eql({
+            comment_id: 1,
+            author: "butter_bridge",
+            article_id: 9,
+            votes: 16,
+            created_at: "2017-11-22T12:36:03.389Z",
+            body:
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+          });
+        });
+    });
+    it("PATCH:200 /api/comments/:comment_id responds with the comment and the incremented votes when a positive integer is passed", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send({ inc_votes: 12 })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments[0]).to.eql({
+            comment_id: 1,
+            author: "butter_bridge",
+            article_id: 9,
+            votes: 28,
+            created_at: "2017-11-22T12:36:03.389Z",
+            body:
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+          });
+        });
+    });
+    it("PATCH:200 /api/comments/:comment_id responds with the comment and the decremented votes when a negative integer is passed", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send({ inc_votes: -12 })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments[0]).to.eql({
+            comment_id: 1,
+            author: "butter_bridge",
+            article_id: 9,
+            votes: 4,
+            created_at: "2017-11-22T12:36:03.389Z",
+            body:
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+          });
+        });
+    });
+    it("PATCH:400 /api/comments/:comment_id responds with an error if an invalid votes type is passed", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send({ inc_votes: "leprechaun" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.eql(' invalid input syntax for integer: "NaN"');
+        });
+    });
+    it("PATCH:400 /api/comments/:comment_id responds with an error if an invalid votes type is passed", () => {
+      return request(app)
+        .patch("/api/comments/banana")
+        .send({ inc_votes: 7 })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.eql(
+            ' invalid input syntax for integer: "banana"'
+          );
+        });
+    });
+    it("PATCH:404 /api/comments/:comment_id responds with an error if an invalid votes type is passed", () => {
+      return request(app)
+        .patch("/api/comments/9999")
+        .send({ inc_votes: 7 })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).to.eql(
+            "Error status 404, comment id 9999 not found"
+          );
+        });
+    });
+    it("PATCH:405 /api/comments/:comment_id responds with an error message if a request to use an invalid method is submitted", () => {
+      const invalidMethods = ["post"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/comments/9999")
+          .expect(405)
+          .then(({ body: { msg } }) => {
+            expect(msg).to.equal("Error 405, method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
+    });
+    it("DELETE:204 /api/comments/:comment_id responds with a status of 204", () => {
+      return request(app)
+        .delete("/api/comments/3")
+        .expect(204);
+    });
+    it("DELETE:400 /api/comments/:comment_id responds with an error if passed an invalid id type", () => {
+      return request(app)
+        .delete("/api/comments/banana")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.equal(
+            ' invalid input syntax for integer: "banana"'
+          );
+        });
+    });
+    it("DELETE:404 /api/comments/:comment_id responds with an error if passed a valid  type of id but that does not exist", () => {
+      return request(app)
+        .delete("/api/comments/9999")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).to.equal(
+            "Error status 404, comment id 9999 not found"
+          );
+        });
+    });
+  });
 });
