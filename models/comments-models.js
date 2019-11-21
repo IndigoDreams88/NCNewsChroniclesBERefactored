@@ -8,15 +8,15 @@ function updateComments(inc_votes, comment_id) {
     .where("comment_id", comment_id)
     .increment("votes", inc_votes || 0)
     .returning("*")
-    .then(comments => {
+    .then(comment => {
       //console.log(comments);
-      if (comments.length === 0) {
+      if (comment.length === 0) {
         return Promise.reject({
           status: 404,
           msg: `Error status 404, comment id ${comment_id} not found`
         });
       } else {
-        return { comments: comments };
+        return { comment: comment };
       }
     });
 }

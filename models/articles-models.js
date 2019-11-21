@@ -8,14 +8,14 @@ function fetchArticlesById(article_id) {
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .groupBy("articles.article_id")
     .where({ "articles.article_id": article_id })
-    .then(articles => {
-      if (articles.length === 0) {
+    .then(article => {
+      if (article.length === 0) {
         return Promise.reject({
           status: 404,
           msg: `Error status 404, article id ${article_id} not found`
         });
       } else {
-        return { articles: articles };
+        return { article: article };
       }
     });
 }
@@ -27,14 +27,14 @@ function updateVotes(update, article_id) {
     .where("article_id", article_id)
     .increment("votes", update || 0)
     .returning("*")
-    .then(articles => {
-      if (articles.length === 0) {
+    .then(article => {
+      if (article.length === 0) {
         return Promise.reject({
           status: 404,
           msg: `Error status 404, article id ${article_id} not found`
         });
       } else {
-        return { articles: articles };
+        return { article: article };
       }
     });
 }
@@ -43,8 +43,8 @@ function createComment(id, username, body) {
   return connection("comments")
     .insert({ article_id: id, author: username, body: body })
     .returning("*")
-    .then(comments => {
-      return { comments: comments };
+    .then(comment => {
+      return { comment: comment };
     });
 }
 
@@ -85,6 +85,7 @@ function checkIfExists(article_id) {
 // need to remove body and add comment count
 
 function fetchAllArticles(sort_by, order, author, topic) {
+  //console.log(topic);
   return connection("articles")
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .select("articles.*")
@@ -102,33 +103,40 @@ function fetchAllArticles(sort_by, order, author, topic) {
     .returning("*")
     .then(articles => {
       if (articles.length === 0) {
-        return Promise.all([
-          articles,
-          checkIfItemExists("author", author),
-          checkIfItemExists("topic", topic)
-        ]);
+        const promises = [{ articles: articles }];
+        // [
+        //   articles,
+        //   checkIfItemExists("users", { username: author || null }),
+        //   checkIfItemExists("topics", { slug: topic || null })
+        // ]
+        // if topic isn't undefined (because someone put it in the url query) then push in the function call into the promises array
+        // same thign for users
+
+        if (author !== undefined) {
+          promises.push(checkIfItemExists("users", { username: author }));
+        }
+        if (topic !== undefined) {
+          promises.push(checkIfItemExists("topics", { slug: topic }));
+        }
+        return Promise.all(promises);
       } else {
-        return articles;
+        return [{ articles: articles }];
       }
     });
 }
 
-function checkIfItemExists(column, item) {
-  // check if undefined, and if it is return true
-  if (item === undefined) {
-    return true;
-  }
+function checkIfItemExists(table, item) {
   return connection
     .select("*")
-    .from("articles")
-    .where({ [`articles.${column}`]: item })
+    .from(table)
+    .where(item)
     .then(result => {
       if (result.length === 1) {
         return true;
       } else {
         return Promise.reject({
           status: 404,
-          msg: `Error status 404, ${column} ${item} not found`
+          msg: "Error status 404, not found"
         });
       }
     });

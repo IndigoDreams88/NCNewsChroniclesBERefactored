@@ -25,8 +25,8 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           //console.log(body);
-          expect(body.topics).to.be.an("object");
-          expect(body.topics.topics).to.be.an("array");
+          expect(body.topics).to.be.an("array");
+          expect(body.topics[0]).to.be.an("object");
         });
     });
     it("GET:200 /api/topics - responds with an array of topic objects containing the keys: slug and description and the corresponding values", () => {
@@ -35,8 +35,8 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           //console.log(body.topics);
-          expect(body.topics.topics[0]).to.have.keys(["slug", "description"]);
-          expect(body.topics.topics[0]).to.eql({
+          expect(body.topics[0]).to.have.keys(["slug", "description"]);
+          expect(body.topics[0]).to.eql({
             slug: "mitch",
             description: "The man, the Mitch, the legend"
           });
@@ -65,8 +65,8 @@ describe("/api tests", () => {
         .get("/api/users/lurker")
         .expect(200)
         .then(({ body }) => {
-          expect(body.users).to.be.an("array");
-          expect(body.users[0]).to.be.an("object");
+          expect(body.user).to.be.an("array");
+          expect(body.user[0]).to.be.an("object");
         });
     });
 
@@ -75,12 +75,8 @@ describe("/api tests", () => {
         .get("/api/users/lurker")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body);
-          expect(body.users[0]).to.have.keys([
-            "username",
-            "avatar_url",
-            "name"
-          ]);
+          //console.log(body.users[0]);
+          expect(body.user[0]).to.have.keys(["username", "avatar_url", "name"]);
         });
     });
     it("GET:404 /api/users/:username - responds with an error if passed a valid type of id but that does not exist", () => {
@@ -117,8 +113,8 @@ describe("/api tests", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body }) => {
-          expect(body.articles).to.be.an("object");
-          expect(body.articles.articles).to.be.an("array");
+          expect(body.article).to.be.an("array");
+          expect(body.article[0]).to.be.an("object");
         });
     });
     it("GET:200 /api/articles/:article_id - responds with an array of article objects each containing the keys: article_id, title, body, votes, topic, author and created_at and the corresponding values", () => {
@@ -127,7 +123,7 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           //console.log(body);
-          expect(body.articles.articles[0]).to.have.keys([
+          expect(body.article[0]).to.have.keys([
             "article_id",
             "title",
             "body",
@@ -137,7 +133,7 @@ describe("/api tests", () => {
             "created_at",
             "comment_count"
           ]);
-          expect(body.articles.articles[0]).to.eql({
+          expect(body.article[0]).to.eql({
             article_id: 1,
             title: "Living in the shadow of a great man",
             body: "I find this existence challenging",
@@ -195,7 +191,7 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           // console.log(body);
-          expect(body.articles.articles[0]).to.eql({
+          expect(body.article[0]).to.eql({
             article_id: 1,
             title: "Living in the shadow of a great man",
             body: "I find this existence challenging",
@@ -213,7 +209,7 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           // console.log(body);
-          expect(body.articles.articles[0]).to.eql({
+          expect(body.article[0]).to.eql({
             article_id: 1,
             title: "Living in the shadow of a great man",
             body: "I find this existence challenging",
@@ -230,8 +226,7 @@ describe("/api tests", () => {
         .send({ update: -10 })
         .expect(200)
         .then(({ body }) => {
-          // console.log(body.articles.articles);
-          expect(body.articles.articles[0]).to.eql({
+          expect(body.article[0]).to.eql({
             article_id: 1,
             title: "Living in the shadow of a great man",
             body: "I find this existence challenging",
@@ -276,8 +271,8 @@ describe("/api tests", () => {
         .send({ username: "lurker", body: "blah blah" })
         .expect(201)
         .then(({ body }) => {
-          console.log(body);
-          expect(body.comments[0]).to.have.keys([
+          //console.log(body.comment[0]);
+          expect(body.comment[0]).to.have.keys([
             "author",
             "votes",
             "article_id",
@@ -285,8 +280,8 @@ describe("/api tests", () => {
             "body",
             "created_at"
           ]);
-          expect(body.comments[0].author).to.equal("lurker");
-          expect(body.comments[0].body).to.equal("blah blah");
+          expect(body.comment[0].author).to.equal("lurker");
+          expect(body.comment[0].body).to.equal("blah blah");
         });
     });
     it("POST:400 /api/articles/:article_id/comments - it responds with an error if missing a required request property, i.e a body", () => {
@@ -359,6 +354,7 @@ describe("/api tests", () => {
         .get("/api/articles/1/comments")
         .expect(200)
         .then(({ body }) => {
+          //console.log(body.comments[0]);
           expect(body.comments[0]).to.be.an("object");
           expect(body.comments[0]).to.have.keys(
             "comment_id",
@@ -385,6 +381,22 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           expect(body.comments).to.be.descendingBy("created_at");
+        });
+    });
+    it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, sorted by default by votes in descening order", () => {
+      return request(app)
+        .get("/api/articles/1/comments?sortBy=votes")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).to.be.descendingBy("votes");
+        });
+    });
+    it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, sorted by default by votes in descening order", () => {
+      return request(app)
+        .get("/api/articles/1/comments?order=asc")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).to.be.ascendingBy("created_at");
         });
     });
     it("GET:400 /api/articles/:article_id/comments - responds with an error message if passed an invalid type of id", () => {
@@ -480,6 +492,24 @@ describe("/api tests", () => {
           expect(articles).to.be.descendingBy("topic");
         });
     });
+    it("GET:200 /api/articles - responds with an array of articles sorted by the passed in topic in descending order", () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          // console.log(articles[0]);
+          expect(articles).to.be.descendingBy("topic");
+        });
+    });
+    it("GET:200 /api/articles - responds with an empty array ", () => {
+      return request(app)
+        .get("/api/articles?author=lurker")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          // console.log(articles[0]);
+          expect(articles.length).to.eql(0);
+        });
+    });
     it("GET:400 /api/articles - responds with an an error message if an invalid column is passed into the sort_by query", () => {
       return request(app)
         .get("/api/articles?sort_by=banana")
@@ -488,13 +518,14 @@ describe("/api tests", () => {
           expect(msg).to.equal(' column "banana" does not exist');
         });
     });
+
     it("GET:404 /api/articles - responds with an error status 404 and a messsage when provided a none existant author ", () => {
       return request(app)
         .get("/api/articles?author=wallace")
         .expect(404)
         .then(({ body: { msg } }) => {
           // console.log(articles[0]);
-          expect(msg).to.equal("Error status 404, author wallace not found");
+          expect(msg).to.equal("Error status 404, not found");
         });
     });
     it("GET:404 /api/articles - responds with an error status 404 and a messsage when provided a none existant topic ", () => {
@@ -503,9 +534,7 @@ describe("/api tests", () => {
         .expect(404)
         .then(({ body: { msg } }) => {
           // console.log(articles[0]);
-          expect(msg).to.equal(
-            "Error status 404, topic jinglejangle not found"
-          );
+          expect(msg).to.equal("Error status 404, not found");
         });
     });
     it("GET:405 /api/articles - responds with an error message if a request to use an invalid method is submitted", () => {
@@ -534,7 +563,7 @@ describe("/api tests", () => {
         .send({ inc_votes: 4 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.comments).to.be.an("array");
+          expect(body.comment).to.be.an("array");
         });
     });
     it("PATCH:200 /api/comments/:comment_id responds with an array of comment objects each with the keys: body, votes, created_at, author, article_id and comment_id and corresponding values", () => {
@@ -544,7 +573,7 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           //console.log(body.comments[0]);
-          expect(body.comments[0]).to.have.keys([
+          expect(body.comment[0]).to.have.keys([
             "body",
             "votes",
             "created_at",
@@ -552,7 +581,7 @@ describe("/api tests", () => {
             "article_id",
             "comment_id"
           ]);
-          expect(body.comments[0]).to.eql({
+          expect(body.comment[0]).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
@@ -569,7 +598,7 @@ describe("/api tests", () => {
         .send({})
         .expect(200)
         .then(({ body }) => {
-          expect(body.comments[0]).to.eql({
+          expect(body.comment[0]).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
@@ -586,7 +615,7 @@ describe("/api tests", () => {
         .send({ inc_votes: 12 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.comments[0]).to.eql({
+          expect(body.comment[0]).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
@@ -603,7 +632,7 @@ describe("/api tests", () => {
         .send({ inc_votes: -12 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.comments[0]).to.eql({
+          expect(body.comment[0]).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
