@@ -16,7 +16,7 @@ function updateComments(inc_votes, comment_id) {
           msg: `Error status 404, comment id ${comment_id} not found`
         });
       } else {
-        return { comment: comment };
+        return { comment: comment[0] };
       }
     });
 }

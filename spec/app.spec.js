@@ -180,7 +180,7 @@ describe("/api tests", () => {
     it("PATCH:200 /api/articles/:article_id - responds with a status of 200", () => {
       return request(app)
         .patch("/api/articles/1")
-        .send({ update: 2 })
+        .send({ inc_votes: 2 })
         .expect(200);
     });
     it("PATCH:200 /api/articles/:article_id - responds with the unchanged article object if no votes are sent", () => {
@@ -204,7 +204,7 @@ describe("/api tests", () => {
     it("PATCH:200 /api/articles/:article_id - responds with the article object and the incremented votes", () => {
       return request(app)
         .patch("/api/articles/1")
-        .send({ update: 2 })
+        .send({ inc_votes: 2 })
         .expect(200)
         .then(({ body }) => {
           // console.log(body);
@@ -222,7 +222,7 @@ describe("/api tests", () => {
     it("PATCH:200 /api/articles/:article_id - responds with the article object and the decremented votes", () => {
       return request(app)
         .patch("/api/articles/1")
-        .send({ update: -10 })
+        .send({ inc_votes: -10 })
         .expect(200)
         .then(({ body }) => {
           expect(body.article).to.eql({
@@ -239,7 +239,7 @@ describe("/api tests", () => {
     it("PATCH:400 /api/articles/:article_id - responds with an error if passed an invalid votes type", () => {
       return request(app)
         .patch("/api/articles/1")
-        .send({ update: "banana" })
+        .send({ inc_votes: "banana" })
         .expect(400)
         .then(({ body }) => {
           // console.log(body);
@@ -249,7 +249,7 @@ describe("/api tests", () => {
     it("PATCH:404 /api/articles/:article_id - responds with an error if passed a non existant id", () => {
       return request(app)
         .patch("/api/articles/9999")
-        .send({ update: 2 })
+        .send({ inc_votes: 2 })
         .expect(404)
         .then(({ body }) => {
           // console.log(body);
@@ -556,23 +556,15 @@ describe("/api tests", () => {
         .send({ inc_votes: 4 })
         .expect(200);
     });
-    it("PATCH:200 /api/comments/:comment_id responds with an array of comment objects for the given comment_id", () => {
-      return request(app)
-        .patch("/api/comments/2")
-        .send({ inc_votes: 4 })
-        .expect(200)
-        .then(({ body }) => {
-          expect(body.comment).to.be.an("array");
-        });
-    });
-    it("PATCH:200 /api/comments/:comment_id responds with an array of comment objects each with the keys: body, votes, created_at, author, article_id and comment_id and corresponding values", () => {
+
+    it("PATCH:200 /api/comments/:comment_id responds with the updated comment, with the keys: body, votes, created_at, author, article_id and comment_id and corresponding values", () => {
       return request(app)
         .patch("/api/comments/1")
         .send({ inc_votes: 4 })
         .expect(200)
         .then(({ body }) => {
           //console.log(body.comments[0]);
-          expect(body.comment[0]).to.have.keys([
+          expect(body.comment).to.have.keys([
             "body",
             "votes",
             "created_at",
@@ -580,7 +572,7 @@ describe("/api tests", () => {
             "article_id",
             "comment_id"
           ]);
-          expect(body.comment[0]).to.eql({
+          expect(body.comment).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
@@ -597,7 +589,7 @@ describe("/api tests", () => {
         .send({})
         .expect(200)
         .then(({ body }) => {
-          expect(body.comment[0]).to.eql({
+          expect(body.comment).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
@@ -614,7 +606,7 @@ describe("/api tests", () => {
         .send({ inc_votes: 12 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.comment[0]).to.eql({
+          expect(body.comment).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
@@ -631,7 +623,7 @@ describe("/api tests", () => {
         .send({ inc_votes: -12 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.comment[0]).to.eql({
+          expect(body.comment).to.eql({
             comment_id: 1,
             author: "butter_bridge",
             article_id: 9,
