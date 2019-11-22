@@ -19,9 +19,9 @@ exports.getArticleById = (req, res, next) => {
 exports.patchVotes = (req, res, next) => {
   // console.log("I am in the update votes controller");
   // console.log(req.body);
-  const { update } = req.body;
+  const { inc_votes } = req.body;
   const { article_id } = req.params;
-  updateVotes(update, article_id)
+  updateVotes(inc_votes, article_id)
     .then(article => {
       //console.log(article);
       res.status(200).send(article);
@@ -42,9 +42,9 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.getCommentsByArticleId = (req, res, next) => {
-  const { sortBy, order } = req.query;
+  const { sort_by, order } = req.query;
   const { article_id } = req.params;
-  fetchCommentsByArticleId(article_id, sortBy, order)
+  fetchCommentsByArticleId(article_id, sort_by, order)
     .then(comments => {
       //console.log(comments);
       res.status(200).send(comments);

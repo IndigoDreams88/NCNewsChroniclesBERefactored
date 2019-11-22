@@ -20,12 +20,12 @@ function fetchArticleById(article_id) {
     });
 }
 
-function updateVotes(update, article_id) {
+function updateVotes(inc_votes, article_id) {
   return connection
     .select("articles.*")
     .from("articles")
     .where("article_id", article_id)
-    .increment("votes", update || 0)
+    .increment("votes", inc_votes || 0)
     .returning("*")
     .then(article => {
       //console.log(article);
@@ -50,19 +50,22 @@ function createComment(id, username, body) {
     });
 }
 
-function fetchCommentsByArticleId(article_id, sortBy, order) {
+function fetchCommentsByArticleId(article_id, sort_by, order) {
   return connection
     .select("*")
     .from("comments")
     .where({ "comments.article_id": article_id })
-    .orderBy(sortBy || "created_at", order || "desc")
+    .orderBy(sort_by || "created_at", order || "desc")
     .returning("*")
     .then(comments => {
       if (comments.length === 0) {
         return Promise.all([comments, checkIfExists(article_id)]);
       } else {
-        return { comments: comments };
+        return [comments];
       }
+    })
+    .then(([comments]) => {
+      return { comments: comments };
     });
 }
 

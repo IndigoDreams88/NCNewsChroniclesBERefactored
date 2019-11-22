@@ -344,8 +344,7 @@ describe("/api tests", () => {
         .expect(200)
         .then(({ body }) => {
           //console.log(body);
-          expect(body).to.be.an("array");
-          expect(body[0].length).to.eql(0);
+          expect(body.comments.length).to.eql(0);
         });
     });
     it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, when comments exist for that article_id", () => {
@@ -382,9 +381,9 @@ describe("/api tests", () => {
           expect(body.comments).to.be.descendingBy("created_at");
         });
     });
-    it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, sorted by default by votes in descening order", () => {
+    it("GET:200 /api/articles/:article_id/comments - responds with an array of comment objects, sorted by default by votes in descending order", () => {
       return request(app)
-        .get("/api/articles/1/comments?sortBy=votes")
+        .get("/api/articles/1/comments?sort_by=votes")
         .expect(200)
         .then(({ body }) => {
           expect(body.comments).to.be.descendingBy("votes");
