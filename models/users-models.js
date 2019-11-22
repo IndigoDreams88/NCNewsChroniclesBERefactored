@@ -14,7 +14,7 @@ function fetchUserByUsername(username) {
           msg: `Error status 404, username ${username} not found`
         });
       } else {
-        return { user: user };
+        return { user: user[0] };
       }
     });
 }

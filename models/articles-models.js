@@ -1,6 +1,6 @@
 const connection = require("../db/connection");
 
-function fetchArticlesById(article_id) {
+function fetchArticleById(article_id) {
   return connection
     .select("articles.*")
     .from("articles")
@@ -15,7 +15,7 @@ function fetchArticlesById(article_id) {
           msg: `Error status 404, article id ${article_id} not found`
         });
       } else {
-        return { article: article };
+        return { article: article[0] };
       }
     });
 }
@@ -28,13 +28,14 @@ function updateVotes(update, article_id) {
     .increment("votes", update || 0)
     .returning("*")
     .then(article => {
+      //console.log(article);
       if (article.length === 0) {
         return Promise.reject({
           status: 404,
           msg: `Error status 404, article id ${article_id} not found`
         });
       } else {
-        return { article: article };
+        return { article: article[0] };
       }
     });
 }
@@ -44,7 +45,8 @@ function createComment(id, username, body) {
     .insert({ article_id: id, author: username, body: body })
     .returning("*")
     .then(comment => {
-      return { comment: comment };
+      //console.log(comment)
+      return { comment: comment[0] };
     });
 }
 
@@ -143,7 +145,7 @@ function checkIfItemExists(table, item) {
 }
 
 module.exports = {
-  fetchArticlesById,
+  fetchArticleById,
   updateVotes,
   createComment,
   fetchCommentsByArticleId,

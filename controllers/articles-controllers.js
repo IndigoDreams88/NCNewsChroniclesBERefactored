@@ -1,16 +1,16 @@
 const {
-  fetchArticlesById,
+  fetchArticleById,
   updateVotes,
   createComment,
   fetchCommentsByArticleId,
   fetchAllArticles
 } = require("../models/articles-models");
 
-exports.getArticlesById = (req, res, next) => {
+exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
-  fetchArticlesById(article_id)
+  fetchArticleById(article_id)
     .then(article => {
-      //
+      //console.log(article);
       res.status(200).send(article);
     })
     .catch(next);
@@ -56,7 +56,7 @@ exports.getAllArticles = (req, res, next) => {
   const { sort_by, order, author, topic } = req.query;
   fetchAllArticles(sort_by, order, author, topic)
     .then(([articles]) => {
-      // console.log(articles);
+      //console.log(articles);
       res.status(200).send(articles);
     })
     .catch(next);
