@@ -13,6 +13,18 @@ describe("/api tests", () => {
   after(() => {
     connection.destroy();
   });
+  it("DELETE:405 /api, returns an error message if a request to use an invalid method is sent", () => {
+    const invalidMethods = ["delete"];
+    const methodPromises = invalidMethods.map(method => {
+      return request(app)
+        [method]("/api")
+        .expect(405)
+        .then(({ body: { msg } }) => {
+          expect(msg).to.equal("Error 405, method not allowed");
+        });
+    });
+  });
+
   describe("/topics tests", () => {
     it("GET:200 /api/topics - responds with a status of 200", () => {
       return request(app)
@@ -504,7 +516,7 @@ describe("/api tests", () => {
         .get("/api/articles?author=lurker")
         .expect(200)
         .then(({ body: { articles } }) => {
-          // console.log(articles[0]);
+          //console.log(articles);
           expect(articles.length).to.eql(0);
         });
     });

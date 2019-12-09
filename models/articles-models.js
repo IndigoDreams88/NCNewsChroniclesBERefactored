@@ -109,13 +109,6 @@ function fetchAllArticles(sort_by, order, author, topic) {
     .then(articles => {
       if (articles.length === 0) {
         const promises = [{ articles: articles }];
-        // [
-        //   articles,
-        //   checkIfItemExists("users", { username: author || null }),
-        //   checkIfItemExists("topics", { slug: topic || null })
-        // ]
-        // if topic isn't undefined (because someone put it in the url query) then push in the function call into the promises array
-        // same thign for users
 
         if (author !== undefined) {
           promises.push(checkIfItemExists("users", { username: author }));
