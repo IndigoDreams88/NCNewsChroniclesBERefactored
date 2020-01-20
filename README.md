@@ -1,6 +1,6 @@
-<h1>nc-news-daily:</h1>
+<h1>nc-news-chronicles:</h1>
 
-<h2>nc-news-daily is a full stack project that uses express and knex to make PSQL database queries.</h2>
+<h2>nc-news-daily is a full stack project that uses express and knex to make PSQL database queries, and React, CSS and HTML 5 for the front end. This is the back end part of the project. To view the code for the front end please visit: https://github.com/IndigoDreams88/NC-News-Chronicles-Final.git</h2>
 
 <h3>Getting Started:</h3>
 <p1>To get started cd into the folder (or create the folder) on your computer where you want to download the files in this repo to, then type <i>"git clone https://github.com/IndigoDreams88/nc-news-project.git"</i> and enter your git username and password when prompted to do so. This will then clone a copy of the repo files and store them in your folder.</p1>
@@ -25,7 +25,7 @@
 - sams-chai-sorted
 
 <h3>Authors</h3>
-<p1>sams-chai-sorted - written by Sam</p1>
+<p1>"sams-chai-sorted" - written by Sam</p1>
 
 <h3>Acknowledgments</h3>
 <p1>Special thanks to the Northcoders tutors for all the training and help!</p1>
