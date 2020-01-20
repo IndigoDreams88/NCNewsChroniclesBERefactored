@@ -16,13 +16,17 @@
 
 <h3>Built With:</h3>
 
-- Express
-- Knex
-- PG
-- Supertest
-- Mocha
-- Chai
-- sams-chai-sorted
+<ul>
+    <li>"express": "^4.17.1"</li>
+    <li>"knex": "^0.20.2"</li>
+    <li>"pg": "^7.12.1"</li>
+    <li>"supertest": "^4.0.2"</li>
+   <li>"cors": "^2.8.5"</li>
+    <li>"express": "^4.17.1"</li>
+    <li>"knex": "^0.20.2"</li>
+    <li>"pg": "^7.12.1"</li>
+    <li>"supertest": "^4.0.2"</li>
+<ul>
 
 <h3>Authors</h3>
 <p1>"sams-chai-sorted" - written by Sam</p1>
