@@ -1,6 +1,6 @@
 <h1>nc-news-chronicles:</h1>
 
-<h2>nc-news-daily is a full stack project that uses express and knex to make PSQL database queries, and React, CSS and HTML 5 for the front end. This is the back end part of the project. To view the code for the front end please visit: https://github.com/IndigoDreams88/NC-News-Chronicles-Final.git</h2>
+<h2>nc-news-daily is a full stack project that uses express and knex to make PSQL database queries, and React, CSS and HTML 5 for the front end. This is the back end part of the project. To view the code for the front end please visit: https://github.com/IndigoDreams88/NC-News-Chronicles-Final.git To view the complete project please visit: https://5e2592241fec0681776afc2c--zen-aryabhata-2c1646.netlify.com/</h2>
 
 <h3>Getting Started:</h3>
 <p1>To get started cd into the folder (or create the folder) on your computer where you want to download the files in this repo to, then type <i>"git clone https://github.com/IndigoDreams88/nc-news-project.git"</i> and enter your git username and password when prompted to do so. This will then clone a copy of the repo files and store them in your folder.</p1>
