@@ -20,15 +20,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/northcoders/be-nc-news.git"
+    "url": "git+https://github.com/IndigoDreams88/NCNewsChroniclesBECode"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/northcoders/be-nc-news/issues"
+    "url": "https://github.com/IndigoDreams88/NCNewsChroniclesBECode"
   },
-  "homepage": "https://github.com/northcoders/be-nc-news#readme",
+  "homepage": "https://github.com/IndigoDreams88/NCNewsChroniclesBECode#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",

@@ -61,7 +61,7 @@
   },
 
   "POST /api/articles/:article_id/comments": {
-    "desription": "responds with the posted object",
+    "description": "responds with the posted object",
     "queries": ["sort_by", "order"],
     "exampleResponse": {
       "comment_id": 19,

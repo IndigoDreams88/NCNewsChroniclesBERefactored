@@ -15,7 +15,7 @@ describe("/api tests", () => {
   });
   it("DELETE:405 /api, returns an error message if a request to use an invalid method is sent", () => {
     const invalidMethods = ["delete"];
-    const methodPromises = invalidMethods.map(method => {
+    const methodPromises = invalidMethods.map((method) => {
       return request(app)
         [method]("/api")
         .expect(405)
@@ -27,16 +27,13 @@ describe("/api tests", () => {
 
   describe("/topics tests", () => {
     it("GET:200 /api/topics - responds with a status of 200", () => {
-      return request(app)
-        .get("/api/topics")
-        .expect(200);
+      return request(app).get("/api/topics").expect(200);
     });
     it("GET:200 /api/topics - responds with an object with a key of topics, which has a value of an array", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body);
           expect(body.topics).to.be.an("array");
           expect(body.topics[0]).to.be.an("object");
         });
@@ -46,17 +43,16 @@ describe("/api tests", () => {
         .get("/api/topics")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.topics);
           expect(body.topics[0]).to.have.keys(["slug", "description"]);
           expect(body.topics[0]).to.eql({
             slug: "mitch",
-            description: "The man, the Mitch, the legend"
+            description: "The man, the Mitch, the legend",
           });
         });
     });
     it("GET:405 /api/topics - responds with an error mesage if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["patch", "put", "post", "delete"];
-      const methodPromises = invalidMethods.map(method => {
+      const methodPromises = invalidMethods.map((method) => {
         return request(app)
           [method]("/api/topics")
           .expect(405)
@@ -68,9 +64,7 @@ describe("/api tests", () => {
   });
   describe("/users tests", () => {
     it("GET:200 /api/users/:username - responds with a status of 200", () => {
-      return request(app)
-        .get("/api/users/lurker")
-        .expect(200);
+      return request(app).get("/api/users/lurker").expect(200);
     });
     it("GET:200 /api/users/:username - responds with an object with a key of users, which has a value of an object", () => {
       return request(app)
@@ -87,7 +81,6 @@ describe("/api tests", () => {
         .get("/api/users/lurker")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.user);
           expect(body.user).to.have.keys(["username", "avatar_url", "name"]);
         });
     });
@@ -96,7 +89,6 @@ describe("/api tests", () => {
         .get("/api/users/banana")
         .expect(404)
         .then(({ body }) => {
-          //console.log(body);
           expect(body.msg).to.equal(
             "Error status 404, username banana not found"
           );
@@ -104,7 +96,7 @@ describe("/api tests", () => {
     });
     it("GET:405 /api/users/:username - responds with an error mesage if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["patch", "put", "post", "delete"];
-      const methodPromises = invalidMethods.map(method => {
+      const methodPromises = invalidMethods.map((method) => {
         return request(app)
           [method]("/api/users/lurker")
           .expect(405)
@@ -116,9 +108,7 @@ describe("/api tests", () => {
   });
   describe("/articles tests", () => {
     it("GET:200 /api/articles/:article_id - responds with a status of 200", () => {
-      return request(app)
-        .get("/api/articles/1")
-        .expect(200);
+      return request(app).get("/api/articles/1").expect(200);
     });
     it("GET:200 /api/articles/:article_id - responds with an object with a key of articles", () => {
       return request(app)
@@ -133,7 +123,6 @@ describe("/api tests", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body);
           expect(body.article).to.have.keys([
             "article_id",
             "title",
@@ -142,7 +131,8 @@ describe("/api tests", () => {
             "topic",
             "author",
             "created_at",
-            "comment_count"
+            "comment_count",
+            "imgUrl",
           ]);
           expect(body.article).to.eql({
             article_id: 1,
@@ -152,7 +142,8 @@ describe("/api tests", () => {
             topic: "mitch",
             author: "butter_bridge",
             created_at: "2018-11-15T12:21:54.171Z",
-            comment_count: "13"
+            comment_count: "13",
+            imgUrl: "/Jose.jpg",
           });
         });
     });
@@ -161,7 +152,6 @@ describe("/api tests", () => {
         .get("/api/articles/banana")
         .expect(400)
         .then(({ body }) => {
-          //console.log(body);
           expect(body.msg).to.eql(
             ' invalid input syntax for integer: "banana"'
           );
@@ -172,15 +162,14 @@ describe("/api tests", () => {
         .get("/api/articles/9999")
         .expect(404)
         .then(({ body }) => {
-          //console.log(body);
           expect(body.msg).to.eql(
             "Error status 404, article id 9999 not found"
           );
         });
     });
-    it("GET:405 /api/articles/:article_id - responds with an error mesage if a request to use an invalid method is submitted", () => {
+    it("GET:405 /api/articles/:article_id - responds with an error message if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["post", "delete"];
-      const methodPromises = invalidMethods.map(method => {
+      const methodPromises = invalidMethods.map((method) => {
         return request(app)
           [method]("/api/articles/1")
           .expect(405)
@@ -201,7 +190,6 @@ describe("/api tests", () => {
         .send({})
         .expect(200)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.article).to.eql({
             article_id: 1,
             title: "Living in the shadow of a great man",
@@ -209,7 +197,8 @@ describe("/api tests", () => {
             votes: 100,
             topic: "mitch",
             author: "butter_bridge",
-            created_at: "2018-11-15T12:21:54.171Z"
+            created_at: "2018-11-15T12:21:54.171Z",
+            imgUrl: "/Jose.jpg",
           });
         });
     });
@@ -219,7 +208,6 @@ describe("/api tests", () => {
         .send({ inc_votes: 2 })
         .expect(200)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.article).to.eql({
             article_id: 1,
             title: "Living in the shadow of a great man",
@@ -227,7 +215,8 @@ describe("/api tests", () => {
             votes: 102,
             topic: "mitch",
             author: "butter_bridge",
-            created_at: "2018-11-15T12:21:54.171Z"
+            created_at: "2018-11-15T12:21:54.171Z",
+            imgUrl: "/Jose.jpg",
           });
         });
     });
@@ -244,7 +233,8 @@ describe("/api tests", () => {
             votes: 90,
             topic: "mitch",
             author: "butter_bridge",
-            created_at: "2018-11-15T12:21:54.171Z"
+            created_at: "2018-11-15T12:21:54.171Z",
+            imgUrl: "/Jose.jpg",
           });
         });
     });
@@ -254,7 +244,6 @@ describe("/api tests", () => {
         .send({ inc_votes: "banana" })
         .expect(400)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.msg).to.eql(' invalid input syntax for integer: "NaN"');
         });
     });
@@ -264,7 +253,6 @@ describe("/api tests", () => {
         .send({ inc_votes: 2 })
         .expect(404)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.msg).to.eql(
             "Error status 404, article id 9999 not found"
           );
@@ -282,14 +270,13 @@ describe("/api tests", () => {
         .send({ username: "lurker", body: "blah blah" })
         .expect(201)
         .then(({ body }) => {
-          //console.log(body.comment[0]);
           expect(body.comment).to.have.keys([
             "author",
             "votes",
             "article_id",
             "comment_id",
             "body",
-            "created_at"
+            "created_at",
           ]);
           expect(body.comment.author).to.equal("lurker");
           expect(body.comment.body).to.equal("blah blah");
@@ -300,7 +287,7 @@ describe("/api tests", () => {
         .post("/api/articles/1/comments")
         .send({ username: "lurker" })
         .expect(400)
-        .then(response => {
+        .then((response) => {
           expect(response.body.msg).to.equal("Error:400, Bad Request");
         });
     });
@@ -309,7 +296,7 @@ describe("/api tests", () => {
         .post("/api/articles/1/comments")
         .send({ body: "Blah, blah, blah" })
         .expect(400)
-        .then(response => {
+        .then((response) => {
           expect(response.body.msg).to.equal("Error:400, Bad Request");
         });
     });
@@ -318,7 +305,7 @@ describe("/api tests", () => {
         .post("/api/articles/banana/comments")
         .send({ username: "badgersbadgers", body: "Blah, blah, blah" })
         .expect(400)
-        .then(response => {
+        .then((response) => {
           expect(response.body.msg).to.equal(
             ' invalid input syntax for integer: "banana"'
           );
@@ -329,13 +316,13 @@ describe("/api tests", () => {
         .post("/api/articles/66666/comments")
         .send({ username: "lurker", body: "Blah, blah, blah" })
         .expect(404)
-        .then(response => {
+        .then((response) => {
           expect(response.body.msg).to.equal("Error article_id does not exist");
         });
     });
     it("POST:405 /api/articles/:article_id/comments - it responds with an error mesage if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["delete"];
-      const methodPromises = invalidMethods.map(method => {
+      const methodPromises = invalidMethods.map((method) => {
         return request(app)
           [method]("/api/articles/5/comments")
           .expect(405)
@@ -346,16 +333,13 @@ describe("/api tests", () => {
       return Promise.all(methodPromises);
     });
     it("GET:200 /api/articles/:article_id/comments - responds with a status of 200", () => {
-      return request(app)
-        .get("/api/articles/1/comments")
-        .expect(200);
+      return request(app).get("/api/articles/1/comments").expect(200);
     });
     it("GET:200 /api/articles/:article_id/comments - responds with an empty array if no comments exist for that article_id", () => {
       return request(app)
         .get("/api/articles/7/comments")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body);
           expect(body.comments.length).to.eql(0);
         });
     });
@@ -364,7 +348,6 @@ describe("/api tests", () => {
         .get("/api/articles/1/comments")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.comments[0]);
           expect(body.comments[0]).to.be.an("object");
           expect(body.comments[0]).to.have.keys(
             "comment_id",
@@ -381,7 +364,7 @@ describe("/api tests", () => {
             votes: 14,
             created_at: "2016-11-22T12:36:03.389Z",
             body:
-              "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky."
+              "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
           });
         });
     });
@@ -413,7 +396,7 @@ describe("/api tests", () => {
       return request(app)
         .get("/api/articles/banana/comments")
         .expect(400)
-        .then(response => {
+        .then((response) => {
           expect(response.body.msg).to.equal(
             ' invalid input syntax for integer: "banana"'
           );
@@ -423,7 +406,7 @@ describe("/api tests", () => {
       return request(app)
         .get("/api/articles/9999/comments")
         .expect(404)
-        .then(response => {
+        .then((response) => {
           expect(response.body.msg).to.equal(
             "Error status 404, article id 9999 not found"
           );
@@ -431,7 +414,7 @@ describe("/api tests", () => {
     });
     it("GET:405 /api/articles/:article_id/comments - responds with an error mesage if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["patch", "put", "delete"];
-      const methodPromises = invalidMethods.map(method => {
+      const methodPromises = invalidMethods.map((method) => {
         return request(app)
           [method]("/api/articles/5/comments")
           .expect(405)
@@ -442,18 +425,13 @@ describe("/api tests", () => {
       return Promise.all(methodPromises);
     });
     it("GET:200 /api/articles - responds with a status of 200", () => {
-      return request(app)
-        .get("/api/articles")
-        .expect(200);
+      return request(app).get("/api/articles").expect(200);
     });
     it("GET:200 /api/articles - responds with an array of article objects", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body);
-          //console.log(body.articles);
-          //console.log(body.articles[0]);
           expect(body.articles).to.be.an("array");
           expect(body.articles[0]).to.contain.keys([
             "author",
@@ -462,7 +440,7 @@ describe("/api tests", () => {
             "topic",
             "created_at",
             "votes",
-            "comment_count"
+            "comment_count",
           ]);
         });
     });
@@ -471,7 +449,6 @@ describe("/api tests", () => {
         .get("/api/articles")
         .expect(200)
         .then(({ body: { articles } }) => {
-          //console.log(articles[0].created_at)
           expect(articles).to.be.descendingBy("created_at");
         });
     });
@@ -480,7 +457,6 @@ describe("/api tests", () => {
         .get("/api/articles?sort_by=title&&order=asc")
         .expect(200)
         .then(({ body: { articles } }) => {
-          //console.log(articles[0].created_at)
           expect(articles).to.be.ascendingBy("title");
         });
     });
@@ -489,7 +465,6 @@ describe("/api tests", () => {
         .get("/api/articles?author=butter_bridge")
         .expect(200)
         .then(({ body: { articles } }) => {
-          //console.log(articles);
           expect(articles).to.be.descendingBy("author");
         });
     });
@@ -498,7 +473,6 @@ describe("/api tests", () => {
         .get("/api/articles?topic=cats")
         .expect(200)
         .then(({ body: { articles } }) => {
-          // console.log(articles[0]);
           expect(articles).to.be.descendingBy("topic");
         });
     });
@@ -507,7 +481,6 @@ describe("/api tests", () => {
         .get("/api/articles?topic=mitch")
         .expect(200)
         .then(({ body: { articles } }) => {
-          // console.log(articles[0]);
           expect(articles).to.be.descendingBy("topic");
         });
     });
@@ -516,7 +489,6 @@ describe("/api tests", () => {
         .get("/api/articles?author=lurker")
         .expect(200)
         .then(({ body: { articles } }) => {
-          //console.log(articles);
           expect(articles.length).to.eql(0);
         });
     });
@@ -534,7 +506,6 @@ describe("/api tests", () => {
         .get("/api/articles?author=wallace")
         .expect(404)
         .then(({ body: { msg } }) => {
-          // console.log(articles[0]);
           expect(msg).to.equal("Error status 404, not found");
         });
     });
@@ -543,13 +514,12 @@ describe("/api tests", () => {
         .get("/api/articles?topic=jinglejangle")
         .expect(404)
         .then(({ body: { msg } }) => {
-          // console.log(articles[0]);
           expect(msg).to.equal("Error status 404, not found");
         });
     });
     it("GET:405 /api/articles - responds with an error message if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["post", "patch", "put", "delete"];
-      const methodPromises = invalidMethods.map(method => {
+      const methodPromises = invalidMethods.map((method) => {
         return request(app)
           [method]("/api/articles")
           .expect(405)
@@ -574,14 +544,13 @@ describe("/api tests", () => {
         .send({ inc_votes: 4 })
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.comments[0]);
           expect(body.comment).to.have.keys([
             "body",
             "votes",
             "created_at",
             "author",
             "article_id",
-            "comment_id"
+            "comment_id",
           ]);
           expect(body.comment).to.eql({
             comment_id: 1,
@@ -590,7 +559,7 @@ describe("/api tests", () => {
             votes: 20,
             created_at: "2017-11-22T12:36:03.389Z",
             body:
-              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
           });
         });
     });
@@ -607,7 +576,7 @@ describe("/api tests", () => {
             votes: 16,
             created_at: "2017-11-22T12:36:03.389Z",
             body:
-              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
           });
         });
     });
@@ -624,7 +593,7 @@ describe("/api tests", () => {
             votes: 28,
             created_at: "2017-11-22T12:36:03.389Z",
             body:
-              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
           });
         });
     });
@@ -641,7 +610,7 @@ describe("/api tests", () => {
             votes: 4,
             created_at: "2017-11-22T12:36:03.389Z",
             body:
-              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+              "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
           });
         });
     });
@@ -678,7 +647,7 @@ describe("/api tests", () => {
     });
     it("PATCH:405 /api/comments/:comment_id responds with an error message if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["post"];
-      const methodPromises = invalidMethods.map(method => {
+      const methodPromises = invalidMethods.map((method) => {
         return request(app)
           [method]("/api/comments/9999")
           .expect(405)
@@ -689,9 +658,7 @@ describe("/api tests", () => {
       return Promise.all(methodPromises);
     });
     it("DELETE:204 /api/comments/:comment_id responds with a status of 204", () => {
-      return request(app)
-        .delete("/api/comments/3")
-        .expect(204);
+      return request(app).delete("/api/comments/3").expect(204);
     });
     it("DELETE:400 /api/comments/:comment_id responds with an error if passed an invalid id type", () => {
       return request(app)
