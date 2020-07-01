@@ -8,11 +8,11 @@ function fetchArticleById(article_id) {
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .groupBy("articles.article_id")
     .where({ "articles.article_id": article_id })
-    .then(article => {
+    .then((article) => {
       if (article.length === 0) {
         return Promise.reject({
           status: 404,
-          msg: `Error status 404, article id ${article_id} not found`
+          msg: `Error status 404, article id ${article_id} not found`,
         });
       } else {
         return { article: article[0] };
@@ -27,12 +27,11 @@ function updateVotes(inc_votes, article_id) {
     .where("article_id", article_id)
     .increment("votes", inc_votes || 0)
     .returning("*")
-    .then(article => {
-      //console.log(article);
+    .then((article) => {
       if (article.length === 0) {
         return Promise.reject({
           status: 404,
-          msg: `Error status 404, article id ${article_id} not found`
+          msg: `Error status 404, article id ${article_id} not found`,
         });
       } else {
         return { article: article[0] };
@@ -44,8 +43,7 @@ function createComment(id, username, body) {
   return connection("comments")
     .insert({ article_id: id, author: username, body: body })
     .returning("*")
-    .then(comment => {
-      //console.log(comment)
+    .then((comment) => {
       return { comment: comment[0] };
     });
 }
@@ -57,7 +55,7 @@ function fetchCommentsByArticleId(article_id, sort_by, order) {
     .where({ "comments.article_id": article_id })
     .orderBy(sort_by || "created_at", order || "desc")
     .returning("*")
-    .then(comments => {
+    .then((comments) => {
       if (comments.length === 0) {
         return Promise.all([comments, checkIfExists(article_id)]);
       } else {
@@ -69,35 +67,31 @@ function fetchCommentsByArticleId(article_id, sort_by, order) {
     });
 }
 
-// utils function
 function checkIfExists(article_id) {
   return connection
     .select("*")
     .from("articles")
     .where({ "articles.article_id": article_id })
-    .then(result => {
+    .then((result) => {
       if (result.length === 1) {
         return true;
       } else {
         return Promise.reject({
           status: 404,
-          msg: `Error status 404, article id ${article_id} not found`
+          msg: `Error status 404, article id ${article_id} not found`,
         });
       }
     });
 }
 
-// need to remove body and add comment count
-
 function fetchAllArticles(sort_by, order, author, topic) {
-  //console.log(topic);
   return connection("articles")
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .select("articles.*")
     .groupBy("articles.article_id")
     .count({ comment_count: "comment_id" })
     .orderBy(sort_by || "created_at", order || "desc")
-    .modify(query => {
+    .modify((query) => {
       if (author) {
         query.where("articles.author", author);
       }
@@ -106,7 +100,7 @@ function fetchAllArticles(sort_by, order, author, topic) {
       }
     })
     .returning("*")
-    .then(articles => {
+    .then((articles) => {
       if (articles.length === 0) {
         const promises = [{ articles: articles }];
 
@@ -128,13 +122,13 @@ function checkIfItemExists(table, item) {
     .select("*")
     .from(table)
     .where(item)
-    .then(result => {
+    .then((result) => {
       if (result.length === 1) {
         return true;
       } else {
         return Promise.reject({
           status: 404,
-          msg: "Error status 404, not found"
+          msg: "Error status 404, not found",
         });
       }
     });
@@ -145,5 +139,5 @@ module.exports = {
   updateVotes,
   createComment,
   fetchCommentsByArticleId,
-  fetchAllArticles
+  fetchAllArticles,
 };
