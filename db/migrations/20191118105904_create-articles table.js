@@ -16,7 +16,7 @@ exports.up = function (knex) {
       .references("users.username")
       .onDelete("CASCADE");
     articlesTable.timestamp("created_at").defaultTo(knex.fn.now());
-    articlesTable.string("imgUrl").notNullable();
+    articlesTable.string("imgUrl");
   });
 };
 
