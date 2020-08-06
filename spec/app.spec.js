@@ -63,6 +63,17 @@ describe("/api tests", () => {
     });
   });
   describe("/users tests", () => {
+    it("GET:200 /api/users/all - responds with a status of 200", () => {
+      return request(app).get("/api/users/all").expect(200);
+    });
+    it("GET:200 /api/users/all - responds with an array of user objects", () => {
+      return request(app)
+        .get("/api/users/all")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.be.an("array");
+        });
+    });
     it("GET:200 /api/users/:username - responds with a status of 200", () => {
       return request(app).get("/api/users/lurker").expect(200);
     });
@@ -94,7 +105,7 @@ describe("/api tests", () => {
           );
         });
     });
-    it("GET:405 /api/users/:username - responds with an error mesage if a request to use an invalid method is submitted", () => {
+    it("GET:405 /api/users/:username - responds with an error message if a request to use an invalid method is submitted", () => {
       const invalidMethods = ["patch", "put", "post", "delete"];
       const methodPromises = invalidMethods.map((method) => {
         return request(app)

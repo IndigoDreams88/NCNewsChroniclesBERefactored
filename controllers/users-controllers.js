@@ -1,11 +1,20 @@
-const { fetchUserByUsername } = require("../models/users-models");
+const {
+  fetchAllUsers,
+  fetchUserByUsername,
+} = require("../models/users-models");
+
+exports.getAllUsers = (req, res, next) => {
+  fetchAllUsers()
+    .then((users) => {
+      res.status(200).send(users);
+    })
+    .catch(next);
+};
 
 exports.getUserByUsername = (req, res, next) => {
-  // console.log("I am in the users controller");
   const { username } = req.params;
   fetchUserByUsername(username)
-    .then(user => {
-      //console.log(user);
+    .then((user) => {
       res.status(200).send(user);
     })
     .catch(next);

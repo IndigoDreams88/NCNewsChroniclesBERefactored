@@ -1,5 +1,5 @@
 exports.handleCustomErrors = (err, req, res, next) => {
-  //console.log(err);
+  console.log(err);
   if (err.status) {
     res.status(err.status).send({ msg: err.msg });
   } else {
@@ -9,24 +9,24 @@ exports.handleCustomErrors = (err, req, res, next) => {
 
 exports.handlePSQLErrors = (err, req, res, next) => {
   if (err.code) {
-    //console.log(err);
+    console.log(err);
     const psqlErrors = {
       "22P02": {
         status: 400,
-        msg: createMessage(err)
+        msg: createMessage(err),
       },
       "23502": {
         status: 400,
-        msg: "Error:400, Bad Request"
+        msg: "Error:400, Bad Request",
       },
       "23503": {
         status: 404,
-        msg: "Error article_id does not exist"
+        msg: "Error article_id does not exist",
       },
       "42703": {
         status: 400,
-        msg: createMessage(err)
-      }
+        msg: createMessage(err),
+      },
     };
     const thisError = psqlErrors[err.code];
     if (thisError) {

@@ -1,7 +1,7 @@
 const commentsRouter = require("express").Router();
 const {
   patchComments,
-  deleteComments
+  deleteComments,
 } = require("../controllers/comments-controllers");
 const { send405Error } = require("../error-handler/error-handler");
 
