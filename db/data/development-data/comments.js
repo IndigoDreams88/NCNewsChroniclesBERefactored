@@ -2455,4 +2455,20 @@ module.exports = [
     votes: 10,
     created_at: 1500584273256,
   },
+  {
+    body:
+      "OMG totally! I love my cat, like without him I'd be a complete mess, I'm sure of it. Whenever I watch the film cats or think about cats I just cry, they're so amazing. I am a cat slave through and through, I'll do anything for them.",
+    belongs_to: "Cats are the greatest",
+    created_by: "cooljmessy",
+    votes: 11,
+    created_at: 1500584273256,
+  },
+  {
+    body:
+      "OMG I'm actually crying right now. I'm so devastated that poor Bob died yesterday, I can't believe it. I just curled up and cuddled my cat in a state of shock. RIP Bob, the greatest street cat that ever lived.",
+    belongs_to: "Bob the greatest street cat that ever lived!",
+    created_by: "tickle122",
+    votes: 2,
+    created_at: 1500584273256,
+  },
 ];

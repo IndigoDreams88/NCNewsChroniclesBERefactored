@@ -294,7 +294,16 @@ module.exports = [
     title: "Cats are the greatest",
     topic: "cats",
     author: "jessjelly",
-    body: "Cats are the best, simply purrrfection! Meow!",
+    body:
+      "Cats are the best, simply purrrfection! Meow! I love black cats, I love ginger cats, I love white cats, I love brown cats, I love all cats, fat cats, slim cats, tall cats, short cats, clever cats, have you ever heard of a stupid cat? I love them all. Period. Forever and ever and ever and ever and eevvvveeeeeerrrrrrrrrrrr!!!!!!",
+    created_at: 1500584273256,
+  },
+  {
+    title: "Bob the greatest street cat that ever lived!",
+    topic: "cats",
+    author: "cooljmessy",
+    body:
+      "James Bowen is a homeless man and former heroin addict, living on the streets of London down to his last bits of change. After a life threatening drug-related incident, his support worker Val, in an attempt to get him off the street, gets him into a council flat and prescribes him methadone. On his first night in his flat, James discovers a cat rifling through his food. Assuming the cat had escaped from somewhere, James tries to return the cat to his real owners. After letting him go, the same evening the cat returns to James's flat, and thus begins the start of a beautiful friendship.",
     created_at: 1500584273256,
   },
 ];
