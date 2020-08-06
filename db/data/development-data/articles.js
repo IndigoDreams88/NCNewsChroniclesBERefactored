@@ -291,66 +291,10 @@ module.exports = [
     created_at: 1492163783248,
   },
   {
-    title: "Cat are the greatest",
+    title: "Cats are the greatest",
     topic: "cats",
     author: "jessjelly",
     body: "Cats are the best, simply purrrfection! Meow!",
     created_at: 1500584273256,
-  },
-  {
-    title: "Cats relationship with humans",
-    topic: "cats",
-    author: "tickle122",
-    body:
-      "Felis catus has had a very long relationship with humans. Ancient Egyptians may have first domesticated cats as early as 4,000 years ago. Plentiful rodents probably drew wild felines to human communities. The cats' skill in killing them may have first earned the affectionate attention of humans. Early Egyptians worshipped a cat goddess and even mummified their beloved pets for their journey to the next world—accompanied by mummified mice! Cultures around the world later adopted cats as their own companions.",
-    created_at: 1492163783248,
-  },
-  {
-    title: "Natural predators",
-    topic: "cats",
-    author: "grumpy19",
-    body:
-      "Like their wild relatives, domestic cats are natural hunters able to stalk prey and pounce with sharp claws and teeth. They are particularly effective at night, when their light-reflecting eyes allow them to see better than much of their prey. Cats also enjoy acute hearing. All cats are nimble and agile, and their long tails aid their outstanding balance.",
-    created_at: 1509866563519,
-  },
-  {
-    title: "How cats communicate",
-    topic: "cats",
-    author: "cooljmessy",
-    body:
-      "Cats communicate by marking trees, fence posts, or furniture with their claws or their waste. These scent posts are meant to inform others of a cat's home range. House cats employ a vocal repertoire that extends from a purr to a screech.",
-    created_at: 1481662720516,
-  },
-  {
-    title: "How cats communicate",
-    topic: "cats",
-    author: "weegembump",
-    body:
-      "Cats communicate by marking trees, fence posts, or furniture with their claws or their waste. These scent posts are meant to inform others of a cat's home range. House cats employ a vocal repertoire that extends from a purr to a screech.",
-    created_at: 1510332061780,
-  },
-  {
-    title: "What cats eat",
-    topic: "cats",
-    author: "weegembump",
-    body:
-      "Domestic cats remain largely carnivorous, and have evolved a simple gut appropriate for raw meat. They also retain the rough tongue that can help them clean every last morsel from an animal bone (and groom themselves). Their diets vary with the whims of humans, however, and can be supplemented by the cat's own hunting successes.",
-    created_at: 1510332061780,
-  },
-  {
-    title: "Cats, friends or foes?",
-    topic: "cats",
-    author: "cooljmessy",
-    body:
-      "Dogs seem almost biologically incapable of hiding their inner moods – shuffling, snuffling, tail-wagging clues to contentment, nervousness or sheer, unadorned joy. Despite what the famous painting might want to tell you, dogs would be terrible poker players. We pick up their cues all too easily.Cats also have sophisticated body language – their moods are signalled through twitching tails, ruffled fur, and the position of ears and whiskers. A purr usually (but not always) signals friendliness or contentment. They’re a usually reliable method of working out if the cat is in friendly mode or best left alone.Cat owners will claim this is all nonsense, of course, and that their bond with their cat is as strong as any dog owner’s. But why does this image of the aloof, unfriendly cat remain? And is there any truth to it?",
-    created_at: 1477707849225,
-  },
-  {
-    title: "Bob the greatest street cat that ever lived",
-    topic: "cats",
-    author: "tickle122",
-    body:
-      "James Bowen is a homeless man and former heroin addict, living on the streets of London down to his last bits of change. After a life threatening drug-related incident, his support worker Val, in an attempt to get him off the street, gets him into a council flat and prescribes him methadone. On his first night in his flat, James discovers a cat rifling through his food. Assuming the cat had escaped from somewhere, James tries to return the cat to his real owners. After letting him go, the same evening the cat returns to James's flat, this time with a purulent wound on his back leg. Worried, James consults his animal-loving but allergic neighbour, Betty. She informs James of a local charity vet where she volunteers, and names the cat Bob. Waiting on a queue at the vet, James misses a meeting with Val. After the appointment, James has Bob neutered and sets him free. However, Bob keeps following James into town, eventually drawing more crowds of people, making James more wealthy, and he eventually decides to keep Bob. Bob becomes a tourist hotspot, and James and Betty start to become romantically attached.One night while returning home, James finds his old friend, Baz, unconscious on his flat estate, overdosed on heroin. Baz later dies in hospital, and James finds out that Betty cannot be around drug addicts, as her deceased brother had been one. On New Year's Eve, James makes an impromptu visit to his biological father, Jack, his stepmother, Hilary, and his lost sisters, Pris and Faith. After Bob destroys their living room, Hilary sends James and Bob out.One day, while busking, James gets into an argument with a chav, causing the crowd to get in a brawl with the man and James getting arrested for it. Although found innocent, he is prohibited from busking for 6 months. While in the chemist, receiving his methadone, Betty notices him. Betty and James argue and go their separate ways. Later on, James visits the offices of The Big Issue to make some more money for him and Bob. He regains his popularity with tourists by selling The Big Issue. After being accused of illegally selling magazines on another vendor's patch, James and Bob are banned for a whole month. After going back in business, James gets into an argument with a rude woman trying to buy Bob off him, losing Bob in the scuffle. Bob does not return for a few days, leaving James devastated. After Bob returns, James feels he is ready to come off the methadone. After a week of gruelling withdrawal symptoms, James awakes, clean and healthy. A journalist, Mary, requests to write a book about James and Bob after his Internet and media popularity, and James agrees. James then fixes up his relationship with his father Jack, and his life turns around for the better.",
-    created_at: 1477707849225,
   },
 ];
