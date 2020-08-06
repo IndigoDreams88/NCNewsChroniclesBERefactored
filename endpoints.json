@@ -9,6 +9,21 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
+
+  "GET /api/users/all": {
+    "description": "responds with an array of user objects",
+    "queries": [],
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "lurker",
+          "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          "name": "do_nothing"
+        }
+      ]
+    }
+  },
+
   "GET /api/users/:username": {
     "description": "responds with the corresponding user object and details",
     "queries": [],
@@ -18,6 +33,16 @@
           "username": "lurker",
           "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
           "name": "do_nothing"
+        },
+        {
+          "username": "grumpy19",
+          "avatar_url": "https://www.tumbit.com/profile-image/4/original/mr-grumpy.jpg",
+          "name": "Paul Grump"
+        },
+        {
+          "username": "happyamy2016",
+          "avatar_url": "https://vignette1.wikia.nocookie.net/mrmen/images/7/7f/Mr_Happy.jpg/revision/latest?cb=20140102171729",
+          "name": "Amy Happy"
         }
       ]
     }
